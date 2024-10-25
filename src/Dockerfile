@@ -25,4 +25,4 @@ RUN /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 
 # Comando para executar o aplicativo
-CMD ["python", "app.py"]
+CMD ["/opt/venv/bin/python", "app.py"]
