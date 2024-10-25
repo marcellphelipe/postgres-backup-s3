@@ -25,7 +25,10 @@ def create_backup():
     try:
         if backup_all:
             # Backup de todos os bancos de dados
-            subprocess.run(f"PGPASSWORD={password} pg_dumpall -h {host} -p {port} -U {user} > {dump_file}", shell=True, check=True)
+            command = f"pg_dumpall -h {host} -p {port} -U {user} > {dump_file}"
+            env = os.environ.copy()  # Copia as variáveis de ambiente
+            env['PGPASSWORD'] = password  # Define a senha no ambiente
+            subprocess.run(command, shell=True, check=True, env=env)
             logging.info(f"Backup de todos os bancos de dados criado: {dump_file}")
         else:
             logging.info("Backup de todos os bancos de dados não está habilitado.")
