@@ -1,9 +1,10 @@
-# Use uma imagem base do Python
-FROM python:3.11-slim
+# Use a imagem oficial do PostgreSQL 16
+FROM postgres:16
 
-# Instale as dependências do PostgreSQL
+# Instale as dependências do Python
 RUN apt-get update && apt-get install -y \
-    postgresql-client \
+    python3 \
+    python3-pip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
