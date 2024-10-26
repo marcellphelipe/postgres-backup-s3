@@ -39,8 +39,8 @@ def create_backup():
     port = os.getenv("POSTGRES_PORT")
     user = os.getenv("POSTGRES_USER")
     password = os.getenv("POSTGRES_PASSWORD")
-    databases = os.getenv("POSTGRES_DATABASE")  # Novamente, essa é a nova variável opcional
-    
+    databases = os.getenv("POSTGRES_DATABASE")  # A nova variável opcional
+
     # Data e hora para nome do arquivo
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
@@ -57,10 +57,12 @@ def create_backup():
 def perform_backup(host, port, user, password, dump_file, database=None):
     try:
         if database:
+            # Use pg_dump para bancos de dados específicos
             command = f"pg_dump -h {host} -p {port} -U {user} {database} > {dump_file}"
         else:
+            # Use pg_dumpall para todos os bancos de dados
             command = f"pg_dumpall -h {host} -p {port} -U {user} > {dump_file}"
-        
+
         env = os.environ.copy()  # Copia as variáveis de ambiente
         env['PGPASSWORD'] = password  # Define a senha no ambiente
         subprocess.run(command, shell=True, check=True, env=env)
@@ -73,7 +75,7 @@ def perform_backup(host, port, user, password, dump_file, database=None):
         logging.error(f"Erro ao realizar o backup: {e}")
     except Exception as e:
         logging.error(f"Ocorreu um erro inesperado: {e}")
-
+        
 def compress_backup(dump_file):
     tar_file = f"{dump_file}.tar.gz"
     
